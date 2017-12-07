@@ -66,10 +66,12 @@ public abstract class Figura implements Runnable, ActionListener {
 
 		while (true) {
 			// przygotowanie nastepnego kadru
+			while(AnimPanel.timer.isRunning()){
 			shape = nextFrame();
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
+			}
 			}
 		}
 	}
@@ -80,15 +82,27 @@ public abstract class Figura implements Runnable, ActionListener {
 		area = new Area(area);
 		aft = new AffineTransform();
 		Rectangle bounds = area.getBounds();
-		int cx = bounds.x + bounds.width / 2;
-		int cy = bounds.y + bounds.height / 2;
+		int cx = bounds.x + (bounds.width / 2);
+		int cy = bounds.y + (bounds.height / 2);
 		// odbicie
-		if (cx < 0 || cx > width)
+		if (cx - (bounds.height / 2) < 0 ){
+			if(dx<0)
 			dx = -dx;
-		if (cy < 0 || cy > height)
+			}
+		else if (cx + bounds.height / 2 > width){
+			if(dx>0)
+			dx = -dx;
+		}
+		else if (cy - bounds.width / 2 < 0){
+			if(dy<0)
 			dy = -dy;
+		}	
+		else if(cy + bounds.width / 2 > height){
+			if(dy>0)
+			dy = -dy;
+		}	
 		// zwiekszenie lub zmniejszenie
-		if (bounds.height > height / 3 || bounds.height < 10)
+		if (bounds.getHeight() > height / 3 || bounds.getHeight() < 10)
 			sf = 1 / sf;
 		// konstrukcja przeksztalcenia
 		aft.translate(cx, cy);
@@ -112,3 +126,7 @@ public abstract class Figura implements Runnable, ActionListener {
 	}
 
 }
+
+//pobraæ referencje do obiektu
+//zapisaæ dx, dy, rotacjê, do jakiejœ listy w klasie, która magicznie mi to przechowa,
+//w momencie zatrzmania ustawiæ dla ka¿dej tamte ==0, a kiedy start z powrotem wrzuciæ z listy.

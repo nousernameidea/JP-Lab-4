@@ -5,12 +5,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
-public class Elipsa extends Figura {
+public class Ko³o extends Figura {
 
-	public Elipsa(Graphics2D buf, int del, int w, int h) {
+	public Ko³o(Graphics2D buf, int del, int w, int h) {
 		super(buf, del, w, h);
 		
-		shape = new Ellipse2D.Float(0, 0, 25, 15);
+		shape = new Ellipse2D.Float(0, 0, 20, 20);
         aft = new AffineTransform();                                  
         area = new Area(shape);
 		// TODO Auto-generated constructor stub

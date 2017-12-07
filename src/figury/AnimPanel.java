@@ -1,6 +1,7 @@
 package figury;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -25,7 +26,7 @@ public class AnimPanel extends JPanel implements ActionListener {
 
 	private int delay = 30;
 
-	private Timer timer;
+	static Timer timer;
 
 	private static int numer = 0;
 
@@ -38,17 +39,23 @@ public class AnimPanel extends JPanel implements ActionListener {
 	public void initialize() {
 		int width = getWidth();
 		int height = getHeight();
-
+		
 		image = createImage(width, height);
 		buffer = (Graphics2D) image.getGraphics();
 		buffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		device = (Graphics2D) getGraphics();
 		device.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		buffer.setBackground(Color.LIGHT_GRAY);
+
 	}
 
 	void addFig() {
-		Figura fig = (numer++ % 2 == 0) ? new Kwadrat(buffer, delay, getWidth(), getHeight())
+		int nummod = numer++ % 4;
+		Figura fig = (nummod == 0) ? new Kwadrat(buffer, delay, getWidth(), getHeight())
 				: new Elipsa(buffer, delay, getWidth(), getHeight());
+		if(nummod == 2)fig = new Ko³o(buffer, delay, getWidth(), getHeight());
+		else if(nummod == 3)fig = new Star(buffer, delay, getWidth(), getHeight());
 		timer.addActionListener(fig);
 		new Thread(fig).start();
 	}
@@ -63,7 +70,10 @@ public class AnimPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		device.drawImage(image, 0, 0, null);
-		buffer.clearRect(0, 0, getWidth(), getHeight());
+		//buffer.translate((Math.abs(Frame.LEFT_ALIGNMENT)+Math.abs(Frame.RIGHT_ALIGNMENT)/2), (Math.abs(Frame.TOP_ALIGNMENT)+Math.abs(Frame.BOTTOM_ALIGNMENT)/2));
+		//device.translate((Math.abs(Frame.LEFT_ALIGNMENT)+Math.abs(Frame.RIGHT_ALIGNMENT)/2), (Math.abs(Frame.TOP_ALIGNMENT)+Math.abs(Frame.BOTTOM_ALIGNMENT)/2));
+		device.drawImage(image, Frame.WIDTH/2, Frame.HEIGHT/2, null);
+		buffer.clearRect(Frame.WIDTH/2, Frame.HEIGHT/2, getWidth(), getHeight());
+		//buffer.translate(Frame.WIDTH, Frame.HEIGHT);
 	}
 }
